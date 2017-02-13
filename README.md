@@ -40,7 +40,7 @@ $ iquery -aq "store(build(<val:double>[i=0:1,2,0,j=0:9,10,0], i+j),foo)"
 
 We can append a copy of the data to itself, along `i` like this:
 ```bash
-t$ iquery -aq "insert(shift(foo, i, 2), foo)"
+$ iquery -aq "insert(shift(foo, i, 2), foo)"
 {i,j} val
 {0,0} 0
 {0,1} 1
@@ -86,7 +86,7 @@ t$ iquery -aq "insert(shift(foo, i, 2), foo)"
 
 Now pick up just the last two rows and append them again:
 ```
-t$ iquery -aq "insert(shift(between(foo,2,null,3,null),i,2),foo)"
+$ iquery -aq "insert(shift(between(foo,2,null,3,null),i,2),foo)"
 {i,j} val
 {0,0} 0
 {0,1} 1
