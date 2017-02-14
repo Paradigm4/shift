@@ -45,8 +45,10 @@ private:
     size_t  const    _whichDim;
     int64_t const    _shift;
     Array const*     _arr;
+    AttributeID const _etId;
     ArrayDesc _schema;
     MemChunk _chunk;
+    MemChunk _ebmChunk;
     Coordinates _outPos;
 
 public:
@@ -56,6 +58,7 @@ public:
         _whichDim(whichDim),
         _shift(shift),
         _arr(&delegate),
+        _etId(_arr->getArrayDesc().getAttributes().size()),
         _schema(_arr->getArrayDesc())
     {}
 
@@ -67,10 +70,13 @@ public:
         _outPos[_whichDim] += _shift;
         Address addr(attr, _outPos);
         _chunk.initialize(_arr, &_schema, addr, 0);
-        PinBuffer scope(_chunk);
-        PinBuffer scope2(*mc);
-        _chunk.allocate(mc->getSize());
-        memcpy(_chunk.getData(), mc->getData(), mc->getSize());
+        PinBuffer scope(*mc);
+        size_t const size = mc->getSize() - mc->getBitmapSize();
+        _chunk.allocate(size);
+        memcpy(_chunk.getDataForLoad(), mc->getConstData(), size);
+        _chunk.setCount(mc->count());
+        std::shared_ptr<ConstRLEEmptyBitmap> ebm = mc->getEmptyBitmap();
+        _chunk.setEmptyBitmap(ebm);
         return _chunk;
     }
 

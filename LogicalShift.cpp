@@ -64,7 +64,7 @@ public:
         {
           throw SYSTEM_EXCEPTION(SCIDB_SE_INTERNAL, SCIDB_LE_ILLEGAL_OPERATION) << "Shift size must be a multiple of chunk length";
         }
-        return ArrayDesc(schemas[0].getName(),
+        return ArrayDesc("",
                          schemas[0].getAttributes(false),
                          schemas[0].getDimensions(),
                          createDistribution(psUndefined),
