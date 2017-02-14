@@ -45,10 +45,8 @@ private:
     size_t  const    _whichDim;
     int64_t const    _shift;
     Array const*     _arr;
-    AttributeID const _etId;
     ArrayDesc _schema;
     MemChunk _chunk;
-    MemChunk _ebmChunk;
     Coordinates _outPos;
 
 public:
@@ -58,7 +56,6 @@ public:
         _whichDim(whichDim),
         _shift(shift),
         _arr(&delegate),
-        _etId(_arr->getArrayDesc().getAttributes().size()),
         _schema(_arr->getArrayDesc())
     {}
 
